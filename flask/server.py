@@ -7,7 +7,7 @@ from web3 import Web3, EthereumTesterProvider
 
 load_dotenv()
 
-from tools import create_wallet, lend, send_token, swap, buy
+from tools import create_wallet, lend, swap, buy
 
 openai.api_key = os.environ["OPENAI"]
 
@@ -21,7 +21,7 @@ def solver():
 
     # prompt = "Send 1 ETH token to address xyz"
     # prompt = "Deposit 100 USD into the AAVE lending pool"
-    # prompt = "Create a wallet for me please"
+    prompt = "Create a wallet for me please"
     # prompt = "Please swap 1 eth for usdc"
     # prompt = "Please buy me 50 apecoin"
 
@@ -40,6 +40,14 @@ def solver():
             }
         ],
         functions = [
+            {
+                "name": "create_wallet",
+                "description": "Create a wallet for the user",
+                "parameters": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
             {
                 "name": "send_token",
                 "description": "Send a given amount of a token to a given address",
