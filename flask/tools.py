@@ -99,9 +99,15 @@ def swap(from_token, to_token, amount):
 def buy(token, amount):
     return "Tokens bought!"
 
+def quick_node_tool(tool_execution_path: str):
+    QUICKNODE_API_KEY = config("QUICKNODE_API_KEY")
+    ETHEREUM_MAINNET_URL = "https://young-wispy-shape.quiknode.pro/57804466c8ab909a08a2cbf4f72526b69965172c/"
+    ETHEREUM_SEPOLIA_URL="https://greatest-lively-asphalt.ethereum-sepolia.discover.quiknode.pro/46192a9dd428a635335c4eb3e7b7d1be6380b05d/"
 
-
-# Helper Function
+    _getWalletTokenBalance(walletAddress: str, networkUrl: str)
+    _getWalletTokenTransactions(walletAddress: str, tokenAddress: str, networkUrl: str)
+    _getTransactionsByAddress(contractAddress: str, networkUrl: str)
+    
 def execute_swap(self, src: str, dst:str, amount: str, from_add:str, slippage=1.0):
     ONEINCH_API_KEY = config("ONEINCH_API_KEY")
     endpoint = 'https://api.1inch.dev/swap/v5.2/1/swap'
@@ -117,6 +123,38 @@ def execute_swap(self, src: str, dst:str, amount: str, from_add:str, slippage=1.
         params=payload, 
         headers={'Authorization': f'Bearer {ONEINCH_API_KEY}'})
     return response.json()
+
+    
+def _getWalletTokenBalance(walletAddress: str, networkUrl: str):
+    w3 = Web3(Web3.HTTPProvider(networkUrl))
+    resp = w3.provider.make_request('qn_getWalletTokenBalance', [{ "wallet": walletAddress}])
+    print(resp)
+
+    
+def _getWalletTokenTransactions(walletAddress: str, tokenAddress: str, networkUrl: str):
+    w3 = Web3(Web3.HTTPProvider(networkUrl))
+    resp = w3.provider.make_request(
+        'qn_getWalletTokenTransactions',
+        [{"address": walletAddress,
+        "contract": tokenAddress,
+        "page":1,
+        "perPage":10}]
+        )
+    print(resp)
+
+def _getTransactionsByAddress(contractAddress: str, networkUrl: str):
+    w3 = Web3(HTTPProvider(networkUrl))
+    resp = w3.provider.make_request('qn_getTransactionsByAddress', [{
+        "address": contractAddress,
+        "page": 1,
+        "perPage": 10
+        }])
+
+    print(resp)
+
+
+    
+
 
 if __name__ == "__main__":
 
