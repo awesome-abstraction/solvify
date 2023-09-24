@@ -38,10 +38,6 @@ const contractABI = [
 ]
 
 async function send_token(token, amount, toENS) {
-    // const provider = new ethers.providers.InfuraProvider(
-    //     process.env.SEPOLIA_URL,
-    //     process.env.INFURA_KEY,
-    // )
     const provider = getDefaultProvider(process.env.GOERLI_URL)
     const toAddress = await provider.resolveName(toENS);
     // const tokenAddress = token === "ETH" ? "0x71C7656EC7ab88b098defB751B7401B5f6d8976F" : "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
@@ -59,41 +55,9 @@ async function send_token(token, amount, toENS) {
     } catch (error) {
         console.error('Error:', error);
     }
-    
-    // -----
-    // const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA);
-    // const toAddy = await provider.resolveName(toAddress);
-    // const contract = new web3.eth.Contract(contractABI, tokenAddress, { from: process.env.SEPOLIA })
-    // console.log("AMOUNT");
-    // console.log(amount);
-    // const amt = web3.utils.toHex(web3.utils.toWei(amount.toString()));
-    // const data = contract.methods.transfer(toAddy, amt).encodeABI();
-
-    // let txObj = {
-    //     gas: web3.utils.toHex(100000),
-    //     "to": tokenAddress,
-    //     "value": "0x00",
-    //     "data": data,
-    //     "from": process.env.SEPOLIA
-    // }
-
-    // web3.eth.accounts.signTransaction(txObj, process.env.SEPOLIA_KEY, (err, signedTx) => {
-    //     if (err) { 
-    //         return callback(err);
-    //     } else {
-    //         console.log(signedTx)
-    //         return web3.eth.sendSignedTransaction(signedTx.rawTransaction, (err, res) => {
-    //             if (err) {
-    //                 console.log(err);
-    //             } else {
-    //                 console.log(res);
-    //             }
-    //         })
-    //     }
-    // });
 }
 
-app.get("/solver", async (req, res) => {
+app.get("/nodesolver", async (req, res) => {
     console.log("In solver");
 
     const prompt = "Send 100 ETH token to address derek.eth";
@@ -134,6 +98,36 @@ app.get("/solver", async (req, res) => {
                     "required": ["token, amount, address"]
                 }
             },
+            {
+                "name": "cross_chain_transfer",
+                "description": "Send USDC from Goerli Ethereum to Polygon.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "fromChain":{
+                            "type": "string",
+                            "enum": ["Ethereum"]
+                        },
+                        "toChain":{
+                            "type": "string",
+                            "enum": ["Polygon"]
+                        },
+                        "tokenSymbol": {
+                            "type": "string",
+                            "enum": ["USDC"]
+                        },
+                        "amount": {
+                            "type": "string",
+                            "description": "The amount of the token being sent across L1/L2s, e.g. 1"
+                        },
+                        "recipient": {
+                            "type": "string",
+                            "description": "The address that the tokens are being sent to, e.g. 0x..."
+                        }
+                    },
+                    "required": ["fromChain, toChain, tokenSymbol, amount, recipient"]
+                }
+            },
         ],
         function_call: "auto",
     });
@@ -152,7 +146,10 @@ app.get("/solver", async (req, res) => {
             const params = JSON.parse(function_call.arguments);
             console.log(params);
 
-            const output = await execute(params.toChain, params.amount, params.recipients, params.tokenSymbol);
+            const recipients = []
+            recipients.push(params.recipient)
+            
+            const output = await execute(params.toChain, params.amount, recipients, params.tokenSymbol);
             console.log(output);
         }
     }
