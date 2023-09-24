@@ -47,7 +47,7 @@ contract DistributionExecutable is AxelarExecutable {
     ) internal override {
         address[] memory recipients = abi.decode(payload, (address[]));
         address tokenAddress = gateway.tokenAddresses(tokenSymbol);
-
+    
         uint256 sentAmount = amount / recipients.length;
         for (uint256 i = 0; i < recipients.length; i++) {
             IERC20(tokenAddress).transfer(recipients[i], sentAmount);
