@@ -5,12 +5,15 @@ import json
 import os
 
 def create_wallet():
+    print("intent: create_wallet")
     return "create_wallet"
 
 def lend(pool, amount):
+    print("intent: lend")
     return "USD lent!"
 
 def transfer_eth_to_apecoin(sender_address: str):
+    
     # Wallet that will receive APECOIN
     INFURA_API_KEY = config("INFURA_API_KEY")
     ETH_SENDER_KEY = config("ETH_SENDER_KEY")
@@ -51,11 +54,11 @@ def transfer_eth_to_apecoin(sender_address: str):
 
     return "Receive Apecoin"
 
-def send_ether_token(amount, 
+def send_ether_token(token,amount, 
                 sender_address, 
                 sender_private_key,
                 receiver_address):
-
+    print("intent: send_ether_token")
     INFURA_API_KEY = config("INFURA_API_KEY")
     ETH_SENDER_KEY = config("ETH_SENDER_KEY")
     eth_rpc_url = f"https://goerli.infura.io/v3/06bd8e943c7046b78ee5225573a8f314"
@@ -83,6 +86,7 @@ def send_ether_token(amount,
     print(f"Transaction sent with hash: {transaction_hash.hex()}")
     
 def swap(from_token, to_token, amount):
+    print("intent: swap")
     USDC_ADDRESS="0x7EA2be2df7BA6E54B1A9C70676f668455E329d29"  # Token address of usdc
     APECOIN_ADDRESS="0x4d224452801ACEd8B2F0aebE155379bb5D594381" # Token address of apecoin
     walletAddress = config("WALLET_ADDRESS")
@@ -97,7 +101,8 @@ def swap(from_token, to_token, amount):
     swap_result = execute_swap(USDC_ADDRESS, APECOIN_ADDRESS, amount_to_swap, walletAddress)
 
 def buy(token, amount):
-    return "Tokens bought!"
+    print("intent: buy")
+    return "buy"
 
 
 
