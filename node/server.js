@@ -6,6 +6,7 @@ const { ethers, getDefaultProvider } = require("ethers");
 const { Web3 } = require("web3");
 const web3 = new Web3(process.env.INFURA);
 const execute = require('./ax-chain/scripts/cross-chain.js')
+const send_token = require('./send-token.js')
 dotenv.config();
 
 const app = express();
@@ -37,29 +38,8 @@ const contractABI = [
     }
 ]
 
-async function send_token(token, amount, toENS) {
-    const provider = getDefaultProvider(process.env.GOERLI_URL)
-    const toAddress = await provider.resolveName(toENS);
-    // const tokenAddress = token === "ETH" ? "0x71C7656EC7ab88b098defB751B7401B5f6d8976F" : "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
-    // const contract = new ethers.Contract(tokenAddress, contractABI, provider);
-    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-    // const amountToSend = ethers.utils.parseUnits("1.0", 18);
-    const amountToSend = ethers.utils.parseEther('1.0');
-
-    try {
-        const transactionResponse = await wallet.sendTransaction({
-            to: toAddress,
-            value: amountToSend,
-        });
-        console.log(`Transaction sent! Transaction hash: ${transactionResponse.hash}`);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 app.get("/nodesolver", async (req, res) => {
     console.log("In solver");
-    console.log(req)
 
     const prompt = req.query.prompt;
     const systemPrompt = "You are a helpful assistant that assists the user to execute crypto transactions."
@@ -145,11 +125,6 @@ app.get("/nodesolver", async (req, res) => {
         }
         if(function_call.name === "cross_chain_transfer") {
             const params = JSON.parse(function_call.arguments);
-            console.log(params);
-
-            const recipients = []
-            recipients.push(["0x6508AFcE56F08Ec965F0Dd9993805671d392c517"])
-            
             const output = await execute(params.toChain, params.amount, recipients, params.tokenSymbol);
             console.log(output);
         }

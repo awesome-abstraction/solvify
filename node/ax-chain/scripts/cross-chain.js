@@ -28,7 +28,7 @@ async function execute(
     const recipients = []
     recipients.push(recipient)
     const amount = Math.floor(parseFloat(amountString)) * 1e6 || 10e6
-    console.log(`Amount of ${tokenSymbol} to send from ${fromChain} to ${toChain}: ${amount}.`)
+    console.log(`Send ${amount} ${tokenSymbol} from ${recipients[0]} ${fromChain} to ${toChain}`)
     // setup wallet 
     const wallet = new Wallet(process.env.PRIVATE_KEY)
 
