@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const { ethers, getDefaultProvider } = require("ethers");
 const { Web3 } = require("web3");
 const web3 = new Web3(process.env.INFURA);
-const { execute } = require('./ax-chain/scripts/cross-chain.js')
+const execute = require('./ax-chain/scripts/cross-chain.js')
 dotenv.config();
 
 const app = express();
@@ -59,8 +59,9 @@ async function send_token(token, amount, toENS) {
 
 app.get("/nodesolver", async (req, res) => {
     console.log("In solver");
+    console.log(req)
 
-    const prompt = "Send 100 ETH token to address derek.eth";
+    const prompt = req.query.prompt;
     const systemPrompt = "You are a helpful assistant that assists the user to execute crypto transactions."
 
     const response = await openai.chat.completions.create({
@@ -147,7 +148,7 @@ app.get("/nodesolver", async (req, res) => {
             console.log(params);
 
             const recipients = []
-            recipients.push(params.recipient)
+            recipients.push(["0x6508AFcE56F08Ec965F0Dd9993805671d392c517"])
             
             const output = await execute(params.toChain, params.amount, recipients, params.tokenSymbol);
             console.log(output);

@@ -23,8 +23,10 @@ const tokenSymbol = "aUSDC" // token symbol
 async function execute(
     toChain,
     amountString,
-    recipients,
+    recipient,
     tokenSymbol){
+    const recipients = []
+    recipients.push(recipient)
     const amount = Math.floor(parseFloat(amountString)) * 1e6 || 10e6
     console.log(`Amount of ${tokenSymbol} to send from ${fromChain} to ${toChain}: ${amount}.`)
     // setup wallet 
@@ -112,11 +114,4 @@ async function execute(
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-execute(toChain, amountToSend, recipients, tokenSymbol).catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  });
-
-  module.exports = {
-    execute,
-  };
+module.exports = execute;
