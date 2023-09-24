@@ -87,15 +87,15 @@ app.get("/nodesolver", async (req, res) => {
                     "properties": {
                         "fromChain":{
                             "type": "string",
-                            "enum": ["Ethereum"]
+                            "enum": ["Ethereum", "Arbitrum", "Linea", "Polygon"]
                         },
                         "toChain":{
                             "type": "string",
-                            "enum": ["Polygon"]
+                            "enum": ["Ethereum", "Arbitrum", "Linea", "Polygon"]
                         },
                         "tokenSymbol": {
                             "type": "string",
-                            "enum": ["USDC"]
+                            "enum": ["aUSDC", "WETH", ]
                         },
                         "amount": {
                             "type": "string",
@@ -103,7 +103,7 @@ app.get("/nodesolver", async (req, res) => {
                         },
                         "recipient": {
                             "type": "string",
-                            "description": "The address that the tokens are being sent to, e.g. 0x..."
+                            "description": "The address that the tokens are being sent to on destination chain, e.g. 0x..."
                         }
                     },
                     "required": ["fromChain, toChain, tokenSymbol, amount, recipient"]
