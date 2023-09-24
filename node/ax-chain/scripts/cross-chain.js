@@ -191,8 +191,8 @@ async function executeCrossChainTransfer(
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-executeCrossChainTransfer("Polygon", "Arbitrum", "1", "0x6508AFcE56F08Ec965F0Dd9993805671d392c517", "aUSDC", ).catch((error) => {
-    console.log(error);
-});
+// executeCrossChainTransfer("Polygon", "Arbitrum", "1", "0x6508AFcE56F08Ec965F0Dd9993805671d392c517", "aUSDC", ).catch((error) => {
+//     console.log(error);
+// });
 
 module.exports = executeCrossChainTransfer;
