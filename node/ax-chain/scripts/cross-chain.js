@@ -3,24 +3,20 @@ const rootPath = path.resolve(__dirname, '../');
 const dotenv = require("dotenv")
 const { getDefaultProvider, Contract, Wallet, utils } = require('ethers');
 const { AxelarQueryAPI, Environment, EvmChain, GasToken} = require("@axelar-network/axelarjs-sdk");
-
 const DistributionExecutable = require(`${rootPath}/${'artifacts/contracts/DistributionExecutable.sol/DistributionExecutable.json'}`)
-
 const Gateway = require(`${rootPath}/${'artifacts/@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol/IAxelarGateway.json'}`);
-
 const IERC20 = require(`${rootPath}/${'artifacts/@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol/IERC20.json'}`);
 
 dotenv.config()
 
 const fromChain = "Ethereum"
 const toChain = "Polygon"
-const amountToSend = "0.0001" // token amount
-const recipients = ["0x6508AFcE56F08Ec965F0Dd9993805671d392c517"] // address to transfer tokens to myself
-const tokenSymbol = "aUSDC" // token symbol
+const amountToSend = "0.0001" 
+const recipients = ["0x6508AFcE56F08Ec965F0Dd9993805671d392c517"]
+const tokenSymbol = "aUSDC" 
 
 // Send 10 USDC from Ethereum to Arbitrum from myself to this address
-// Convert my USDC to Arbitrum USDC
-async function execute(
+async function executeCrossChainTransfer(
     toChain,
     amountString,
     recipient,
@@ -83,8 +79,8 @@ async function execute(
         "ethereum-2",
         EvmChain.POLYGON,
         GasToken.ETH,
-        700000, // where does this come from...
-        2, // where does this come from...
+        700000,
+        2,
     );
     console.log(`Queried for gas estimation succssfully with the following fee: ${fee}`)
 
@@ -114,4 +110,4 @@ async function execute(
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-module.exports = execute;
+module.exports = executeCrossChainTransfer;

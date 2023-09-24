@@ -5,8 +5,8 @@ const dotenv = require("dotenv");
 const { ethers, getDefaultProvider } = require("ethers");
 const { Web3 } = require("web3");
 const web3 = new Web3(process.env.INFURA);
-const execute = require('./ax-chain/scripts/cross-chain.js')
-const send_token = require('./send-token.js')
+const executeCrossChainTransfer = require('./ax-chain/scripts/cross-chain.js')
+const sendToken = require('./send-token.js')
 dotenv.config();
 
 const app = express();
@@ -120,12 +120,12 @@ app.get("/nodesolver", async (req, res) => {
             const params = JSON.parse(function_call.arguments);
             console.log(params);
 
-            const output = await send_token(params.token, params.amount, params.address);
+            const output = await sendToken(params.token, params.amount, params.address);
             console.log(output);
         }
         if(function_call.name === "cross_chain_transfer") {
             const params = JSON.parse(function_call.arguments);
-            const output = await execute(params.toChain, params.amount, recipients, params.tokenSymbol);
+            const output = await executeCrossChainTransfer(params.toChain, params.amount, params.recipient, params.tokenSymbol);
             console.log(output);
         }
     }
