@@ -29,7 +29,7 @@ const arbDistributionAddress = '0x8229896Cc02B98c0d21cb3d54D46DB1e156Ec764'
 const lineaDistributionAddress = '0x62fD46BDEEF1657B97B9E27d58382351F6e6FEa2'
 
 // Evm Chain IDs for axelar api
-const ethChainID = "ethereum"
+const ethChainID = "ethereum-2"
 const polygonChainID = "polygon"
 const lineaChainID = "linea"
 const arbChainID = "arbitrum"
@@ -72,7 +72,7 @@ async function executeCrossChainTransfer(
         srcGatewayAddress = polygonGatewayAddress;
         srcDistributionAddress = polygonDistributionAddress;
     } else if(fromChain == "Arbitrum") {
-        srcRPC = ethRPC;
+        srcRPC = arbRPC;
         srcChainID = arbChainID;
         srcGatewayAddress = arbGatewayAddress;
         srcDistributionAddress = arbDistributionAddress;
@@ -136,13 +136,12 @@ async function executeCrossChainTransfer(
     const destTokenAddress = await destGatewayContract.tokenAddresses(tokenSymbol)
     const destTokenContract = new Contract(destTokenAddress, IERC20.abi, destWallet)
 
-
     const srcBalance = await srcTokenContract.balanceOf(recipients[0])
     const destBalance = await destTokenContract.balanceOf(recipients[0])
     console.log("Token contracts created.")
     async function logAccountBalances() {
-        console.log(`${recipients[0]} has ${srcBalance} ${tokenSymbol}`)
-        console.log(`${recipients[0]} has ${destBalance} ${tokenSymbol}`);
+        console.log(`${recipients[0]} has ${srcBalance} ${tokenSymbol} on ${fromChain}`);
+        console.log(`${recipients[0]} has ${destBalance} ${tokenSymbol} on ${toChain}`);
     }
     logAccountBalances()
 
@@ -174,8 +173,8 @@ async function executeCrossChainTransfer(
             value: fee,
         },
     )
-    await sendTx.wait()
-    console.log(`Send transaction was successful.`)
+    const txReceipt = await sendTx.wait()
+    console.log(`Send transaction was successful. Tx Hash: ${txReceipt.transactionHash}.`)
     console.log(`Waiting until the updated balance is reflected on the destination chain.`)
     while (true) {
         const updatedBalance = await destTokenContract.balanceOf(recipients[0]);
@@ -187,11 +186,12 @@ async function executeCrossChainTransfer(
         await sleep(1000);
     }
     await logAccountBalances()
+    return txReceipt.transactionHash
 }
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// executeCrossChainTransfer("Ethereum", "Arbitrum", "2", "0x6508AFcE56F08Ec965F0Dd9993805671d392c517", "aUSDC", ).catch((error) => {
+// executeCrossChainTransfer("Ethereum", "Linea", "1", "0x6508AFcE56F08Ec965F0Dd9993805671d392c517", "aUSDC", ).catch((error) => {
 //     console.log(error);
 // });
 
