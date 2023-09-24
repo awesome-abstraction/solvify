@@ -2,18 +2,28 @@ from flask import Flask
 import openai
 import os
 import json
+from dotenv import load_dotenv
+from web3 import Web3, EthereumTesterProvider
 
-from tools import send_token
+load_dotenv()
 
-os.environ["OPENAI"] = "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"
+from tools import create_wallet, lend, send_token, swap, buy
 
 openai.api_key = os.environ["OPENAI"]
 
 app = Flask(__name__)
 
 @app.route("/solver", methods=["GET"])
-def welcome():
-    prompt = "Send 1 ETH token to address xyz"
+def solver():
+
+    web3 = Web3(Web3.HTTPProvider(os.environ["INFURA"]))
+
+    # prompt = "Send 1 ETH token to address xyz"
+    # prompt = "Deposit 100 USD into the AAVE lending pool"
+    # prompt = "Create a wallet for me please"
+    prompt = "Please swap 1 eth for usdc"
+    # prompt = "Please buy me 50 apecoin"
+
     systemPrompt = "You are a helpful assistant that assists the user to execute crypto transactions."
 
     response = openai.ChatCompletion.create(
@@ -50,6 +60,46 @@ def welcome():
                     },
                     "required": ["token, amount, address"]
                 }
+            },
+            {
+                "name": "swap",
+                "description": "Swap tokens",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "from_token": {
+                            "type": "string",
+                            "enum": ["USDC", "ETH"]
+                        },
+                        "to_token": {
+                            "type": "string",
+                            "enum": ["USDC", "ETH"]
+                        },
+                        "amount": {
+                            "type": "integer",
+                            "description": "The amount of the from_token that is being exchanged from to_token"
+                        }
+                    },
+                    "required": ["from_token", "to_token", "amount"]
+                }
+            },
+            {
+                "name": "buy",
+                "description": "Buy tokens",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "token": {
+                            "type": "string",
+                            "enum": ["USDC", "ETH", "apecoin"]
+                        },
+                        "amount": {
+                            "type": "integer",
+                            "description": "The amount of tokens that the user would like to buy"
+                        }
+                    },
+                    "required": ["token", "amount"]
+                }
             }
         ],
         function_call="auto",
@@ -61,35 +111,6 @@ def welcome():
     function_result = chosen_function(**params)
 
     return function_result
-
-    # if response.get("function_call"):
-    #     available_functions = {
-    #         "send_token": send_token,
-    #     }
-    #     function_name = response["function_call"]["name"]
-    #     function_to_call = available_functions[function_name]
-    #     function_args = json.loads(response["function_call"]["arguments"])
-    #     function_response = function_to_call(
-    #         token=function_args.get("token"),
-    #         amount=function_args.get("amount"),
-    #         address=function_args.get("address"),
-    #     )
-
-    #     messages.append(response)
-    #     messages.append(
-    #         {
-    #             "role": "function",
-    #             "name": function_name,
-    #             "content": function_response,
-    #         }
-    #     )
-    #     second_response = openai.ChatCompletion.create(
-    #         model="gpt-3.5-turbo",
-    #         messages=messages
-    #     )
-    #     return second_response
-
-    return response
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=105)
