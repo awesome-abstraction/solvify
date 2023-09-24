@@ -13,15 +13,16 @@ const avaGasServiceAddress = '0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6'
 const polygonGatewayAddress = '0xBF62ef1486468a6bd26Dd669C06db43dEd5B849B'
 const polygonGasServiceAddress = '0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6'
 
+const arbGatewayAddress = '0xe432150cce91c13a887f7D836923d5597adD8E31'
+const arbGasServiceAddress = '0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6'
+const lineaGatewayAddress = '0xe432150cce91c13a887f7D836923d5597adD8E31'
+const lineaGasServiceAddress = '0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6'
+
+
 async function main() {
   const exec = await hre.ethers.deployContract("DistributionExecutable", [polygonGasServiceAddress, polygonGasServiceAddress])
   await exec.waitForDeployment()
-  // const address = await exec.getAddress()
   console.log("Distribution contract deployed.")
-  // const ContractFactory = await hre.ethers.getContractFactory("DistributionExecutable")
-  // const contract = await ContractFactory.deploy(ethGatewayAddress, ethGasServiceAddress) 
-  // await contract.deployed()
-  // console.log("Contract deployed to:", contract.address)
 }
 
 main().catch((error) => {

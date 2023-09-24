@@ -12,6 +12,12 @@ module.exports = {
     },
     mumbai: {
       url: "https://polygon-mumbai.g.alchemy.com/v2/Ksd4J1QVWaOJAJJNbr_nzTcJBJU-6uP3",
-    }
+    },
+    arb: {
+      url: "https://goerli-rollup.arbitrum.io/rpc",
+    },
+    linea: {
+      url: "https://rpc.goerli.linea.build",
+    },
   }
 };
