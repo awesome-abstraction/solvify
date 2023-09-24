@@ -4,14 +4,16 @@ import os
 import json
 from dotenv import load_dotenv
 from web3 import Web3, EthereumTesterProvider
+from flask_cors import CORS
 
 load_dotenv()
 
-from tools import create_wallet, lend, send_token, swap, buy
+from tools import create_wallet, lend, swap, buy, send_ether_token
 
 openai.api_key = os.environ["OPENAI"]
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/solver", methods=["GET"])
 def solver():
@@ -41,7 +43,15 @@ def solver():
         ],
         functions = [
             {
-                "name": "send_token",
+                "name": "create_wallet",
+                "description": "Create a wallet for the user",
+                "parameters": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            {
+                "name": "send_ether_token",
                 "description": "Send a given amount of a token to a given address",
                 "parameters": {
                     "type": "object",
