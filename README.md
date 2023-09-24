@@ -35,4 +35,4 @@ Finally, we hope that our project inspires others who are working in this space 
 
 ## Inspirations:
 * [Introducing Essential: We Are Intents](https://blog.essential.builders/introducing-essential/)
-* [Intent-Based Architectures and their Risks by Quintus & Georgios from Paradigm](https://www.paradigm.xyz/2023/06/intents)
+* [Intent-Based Architectures and their Risks](https://www.paradigm.xyz/2023/06/intents)
