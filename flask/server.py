@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import openai
 import os
 import json
@@ -15,13 +15,14 @@ app = Flask(__name__)
 
 @app.route("/solver", methods=["GET"])
 def solver():
-
+    args = request.args
+    prompt = args.get("prompt")
     web3 = Web3(Web3.HTTPProvider(os.environ["INFURA"]))
 
     # prompt = "Send 1 ETH token to address xyz"
     # prompt = "Deposit 100 USD into the AAVE lending pool"
     # prompt = "Create a wallet for me please"
-    prompt = "Please swap 1 eth for usdc"
+    # prompt = "Please swap 1 eth for usdc"
     # prompt = "Please buy me 50 apecoin"
 
     systemPrompt = "You are a helpful assistant that assists the user to execute crypto transactions."
