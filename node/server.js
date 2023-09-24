@@ -125,7 +125,7 @@ app.get("/nodesolver", async (req, res) => {
         }
         if(function_call.name === "cross_chain_transfer") {
             const params = JSON.parse(function_call.arguments);
-            const output = await executeCrossChainTransfer(params.toChain, params.amount, params.recipient, params.tokenSymbol);
+            const output = await executeCrossChainTransfer(params.fromChain, params.toChain, params.amount, params.recipient, params.tokenSymbol);
             console.log(output);
         }
     }

@@ -44,6 +44,7 @@ const arbChainID = "arbitrum"
 // const recipients = ["0x6508AFcE56F08Ec965F0Dd9993805671d392c517"]
 // const tokenSymbol = "aUSDC" 
 async function executeCrossChainTransfer(
+    fromChain,
     toChain,
     amountString,
     recipient,
@@ -189,5 +190,9 @@ async function executeCrossChainTransfer(
 }
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// executeCrossChainTransfer("Ethereum", "Arbitrum", "2", "0x6508AFcE56F08Ec965F0Dd9993805671d392c517", "aUSDC", ).catch((error) => {
+//     console.log(error);
+// });
 
 module.exports = executeCrossChainTransfer;
