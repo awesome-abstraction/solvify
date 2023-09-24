@@ -17,7 +17,7 @@ app = Flask(__name__)
 def solver():
     args = request.args
     prompt = args.get("prompt")
-    web3 = Web3(Web3.HTTPProvider(os.environ["INFURA"]))
+    # web3 = Web3(Web3.HTTPProvider(os.environ["INFURA"]))
 
     # prompt = "Send 1 ETH token to address xyz"
     # prompt = "Deposit 100 USD into the AAVE lending pool"
