@@ -31,7 +31,7 @@ We believe the future of Ethereum will be increasingly intent-centric. Our work 
 
 We theorize that a solver marketplace will arise soon, with models and novel designs competing against one another to satisfy intents - similar to how solutions have emerged to mitigate the negative impacts of MEV (e.g. Flashbots). We further hypothesize that a world where solvers compete to satisfy user intents in the most cost efficient way will be a far more equitable landscape than the status quo. This is because the economic incentives of 3rd party solvers will align with users, as opposed to how today’s MEV searchers and block builders are competing to maximally extract value from users.
 
-Finally, we hope that our project inspires others who are working in this space to build to realize a more intent-centric future for Ethereum.
+Finally, we hope that our project inspires others who are working in this space to build towards a more intent-centric future for Ethereum.
 
 ## Inspirations:
 * [Introducing Essential: We Are Intents](https://blog.essential.builders/introducing-essential/)
