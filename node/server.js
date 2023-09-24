@@ -2,8 +2,8 @@ const express = require("express");
 const axios = require("axios");
 const OpenAI = require("openai");
 const dotenv = require("dotenv");
-const { ethers } = require("ethers");
-const Web3 = require("web3");
+const { ethers, getDefaultProvider } = require("ethers");
+const { Web3 } = require("web3");
 const web3 = new Web3(process.env.INFURA);
 
 dotenv.config();
@@ -36,41 +36,66 @@ const contractABI = [
     }
 ]
 
-async function send_token(tokenAddress, amount, toAddress) {
-    const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA);
-    const toAddy = await provider.resolveName(toAddress);
-    const contract = new web3.eth.Contract(contractABI, tokenAddress, { from: process.env.SEPOLIA })
-    const amt = web3.utils.toHex(Web3js.utils.toWei(amount));
-    const data = contract.methods.transfer(toAddy, amt).encodeABI();
+async function send_token(token, amount, toENS) {
+    // const provider = new ethers.providers.InfuraProvider(
+    //     process.env.SEPOLIA_URL,
+    //     process.env.INFURA_KEY,
+    // )
+    const provider = getDefaultProvider(process.env.GOERLI_URL)
+    const toAddress = await provider.resolveName(toENS);
+    // const tokenAddress = token === "ETH" ? "0x71C7656EC7ab88b098defB751B7401B5f6d8976F" : "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    // const contract = new ethers.Contract(tokenAddress, contractABI, provider);
+    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+    // const amountToSend = ethers.utils.parseUnits("1.0", 18);
+    const amountToSend = ethers.utils.parseEther('1.0');
 
-    let txObj = {
-        gas: web3.utils.toHex(100000),
-        "to": tokenAddress,
-        "value": "0x00",
-        "data": data,
-        "from": process.env.SEPOLIA
+    try {
+        const transactionResponse = await wallet.sendTransaction({
+            to: toAddress,
+            value: amountToSend,
+        });
+        console.log(`Transaction sent! Transaction hash: ${transactionResponse.hash}`);
+    } catch (error) {
+        console.error('Error:', error);
     }
+    
+    // -----
+    // const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA);
+    // const toAddy = await provider.resolveName(toAddress);
+    // const contract = new web3.eth.Contract(contractABI, tokenAddress, { from: process.env.SEPOLIA })
+    // console.log("AMOUNT");
+    // console.log(amount);
+    // const amt = web3.utils.toHex(web3.utils.toWei(amount.toString()));
+    // const data = contract.methods.transfer(toAddy, amt).encodeABI();
 
-    web3.eth.accounts.signTransaction(txObj, process.env.SEPOLIA_KEY, (err, signedTx) => {
-        if (err) { 
-            return callback(err);
-        } else {
-            console.log(signedTx)
-            return web3.eth.sendSignedTransaction(signedTx.rawTransaction, (err, res) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(res);
-                }
-            })
-        }
-    });
+    // let txObj = {
+    //     gas: web3.utils.toHex(100000),
+    //     "to": tokenAddress,
+    //     "value": "0x00",
+    //     "data": data,
+    //     "from": process.env.SEPOLIA
+    // }
+
+    // web3.eth.accounts.signTransaction(txObj, process.env.SEPOLIA_KEY, (err, signedTx) => {
+    //     if (err) { 
+    //         return callback(err);
+    //     } else {
+    //         console.log(signedTx)
+    //         return web3.eth.sendSignedTransaction(signedTx.rawTransaction, (err, res) => {
+    //             if (err) {
+    //                 console.log(err);
+    //             } else {
+    //                 console.log(res);
+    //             }
+    //         })
+    //     }
+    // });
 }
 
 app.get("/solver", async (req, res) => {
     console.log("In solver");
 
-    const prompt = "Send 1 ETH token to address derek.eth";
+    const prompt = "Send 100 ETH token to address derek.eth";
     const systemPrompt = "You are a helpful assistant that assists the user to execute crypto transactions."
 
     const response = await openai.chat.completions.create({
