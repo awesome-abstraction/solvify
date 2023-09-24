@@ -1,6 +1,6 @@
 # :jigsaw: Solvify
 
-Born at the [ETHGlobal New York 2023 Hackathon](https://ethglobal.com/showcase/solvify-jq62y), Solvify is web3 solver implementation for an intent-centric future on Etheruem - all with a delightful web2-like UX and powerful AI agents from LangChain to optimally satisfy intents and retain value for users.
+Born at the [ETHGlobal New York 2023 Hackathon](https://ethglobal.com/showcase/solvify-jq62y), Solvify is a proof-of-concept web3 solver implementation for an intent-centric future on Etheruem - all with a delightful web2-like UX and powerful AI agents from LangChain to optimally satisfy intents and retain value for users.
 
 ## Introduction: What are intents?
 An intent represents a desired outcome - often with a given set of constraints to operate within and inputs to use to do so. Transactions are the precise steps needed to be executed to satisfy a given intent. Our project is a solver implementation that takes an intent, alongside its constraints & inputs, and converts it into a series of transactions to be executed on behalf of the user.
