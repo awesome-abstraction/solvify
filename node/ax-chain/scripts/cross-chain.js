@@ -25,8 +25,8 @@ const lineaGatewayAddress = '0xe432150cce91c13a887f7D836923d5597adD8E31'
 // Testnet Distribution Contracts
 const ethDistributionAddress = '0x39786c8dC764D4306B908F5Fc2De08A1382bD83D'
 const polygonDistributionAddress = '0x8063623544561Db815f84521Ad0eAb023bE1497F'
-const arbDistributionAddress = ''
-const lineaDistributionAddress = ''
+const arbDistributionAddress = '0x8229896Cc02B98c0d21cb3d54D46DB1e156Ec764'
+const lineaDistributionAddress = '0x62fD46BDEEF1657B97B9E27d58382351F6e6FEa2'
 
 // Evm Chain IDs for axelar api
 const ethChainID = "ethereum"

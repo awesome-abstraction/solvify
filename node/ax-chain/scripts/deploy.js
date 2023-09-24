@@ -20,7 +20,7 @@ const lineaGasServiceAddress = '0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6'
 
 
 async function main() {
-  const exec = await hre.ethers.deployContract("DistributionExecutable", [polygonGasServiceAddress, polygonGasServiceAddress])
+  const exec = await hre.ethers.deployContract("DistributionExecutable", [lineaGatewayAddress, lineaGasServiceAddress])
   await exec.waitForDeployment()
   console.log("Distribution contract deployed.")
 }
